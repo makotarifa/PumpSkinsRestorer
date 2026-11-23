@@ -1,0 +1,21 @@
+[package]
+name = "offline_skins"
+version = "0.1.0"
+edition = "2021"
+description = "Applies Mojang skins on Pumpkin servers running with online_mode=false"
+license = "GPL-3.0"
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+pumpkin-plugin-api = "0.2.1"
+serde_json = "1"
+tracing = "0.1"
+waki = "0.5.1"
+
+[profile.release]
+opt-level = "s"
+lto = true
+codegen-units = 1
+strip = true
