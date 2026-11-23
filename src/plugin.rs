@@ -5,9 +5,9 @@ use tracing::info;
 
 use crate::events;
 
-pub struct OfflineSkins;
+pub struct PumpSkinsRestorer;
 
-impl Plugin for OfflineSkins {
+impl Plugin for PumpSkinsRestorer {
     fn new() -> Self {
         Self
     }
@@ -17,7 +17,7 @@ impl Plugin for OfflineSkins {
             name: "offline_skins".into(),
             version: env!("CARGO_PKG_VERSION").into(),
             authors: vec!["makyg".into()],
-            description: "Applies Mojang skins on servers running with online_mode=false.".into(),
+            description: "PumpSkinsRestorer: applies Mojang skins with online_mode=false.".into(),
             dependencies: vec![],
             permissions: vec![HTTP_OUTBOUND.into()],
         }
@@ -25,7 +25,7 @@ impl Plugin for OfflineSkins {
 
     fn on_load(&self, context: Context) -> Result<()> {
         events::register(&context)?;
-        info!("OfflineSkins: plugin loaded");
+        info!("PumpSkinsRestorer: plugin loaded");
         Ok(())
     }
 }

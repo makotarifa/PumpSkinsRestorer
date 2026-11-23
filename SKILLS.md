@@ -1,10 +1,10 @@
 # Coding skills and conventions
 
-This document describes how OfflineSkins is organised and the conventions to follow when changing it. The plugin is a Rust `cdylib`/`rlib` compiled to `wasm32-wasip2` for Pumpkin 0.2.2. Its one job is narrow: resolve a Mojang skin during login and apply it without respawning the player.
+This document describes how PumpSkinsRestorer is organised and the conventions to follow when changing it. The plugin is a Rust `cdylib`/`rlib` compiled to `wasm32-wasip2` for Pumpkin 0.2.2. Its one job is narrow: resolve a Mojang skin during login and apply it without respawning the player.
 
 ## Project structure
 
-`src/lib.rs` stays thin: it only declares the modules and invokes `pumpkin_plugin_api::register_plugin!(OfflineSkins)`. Everything else lives in one module with one responsibility.
+`src/lib.rs` stays thin: it only declares the modules and invokes `pumpkin_plugin_api::register_plugin!(PumpSkinsRestorer)`. Everything else lives in one module with one responsibility.
 
 - **`src/plugin.rs`** — the `Plugin` implementation: `metadata()` (name `offline_skins`, version from `CARGO_PKG_VERSION`, author, description, dependencies, and the `HTTP_OUTBOUND` permission) and `on_load()`, which registers the login handler at `EventPriority::Normal`.
 - **`src/events.rs`** — `LoginHandler` and its `impl EventHandler<PlayerLoginEvent>`. It reads the player's name, calls `fetch_skin`, and applies the result with `player.set_skin(&skin)`. A missing skin or an HTTP error logs a warning and returns the event unchanged; login must never fail because Mojang was unreachable.

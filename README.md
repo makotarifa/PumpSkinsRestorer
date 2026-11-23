@@ -1,6 +1,6 @@
-# OfflineSkins
+# PumpSkinsRestorer
 
-A WASM plugin for Pumpkin that restores Mojang skins on servers running with `online_mode = false`. Pumpkin cannot verify Java accounts in offline mode, so it hands every player the default skin. OfflineSkins looks the player's name up in Mojang's public APIs during login and queues the signed skin texture before Pumpkin builds the player-info packet.
+A WASM plugin for Pumpkin that restores Mojang skins on servers running with `online_mode = false`. Pumpkin cannot verify Java accounts in offline mode, so it hands every player the default skin. PumpSkinsRestorer looks the player's name up in Mojang's public APIs during login and queues the signed skin texture before Pumpkin builds the player-info packet.
 
 ## Compatibility
 
@@ -8,11 +8,11 @@ A WASM plugin for Pumpkin that restores Mojang skins on servers running with `on
 - API: WIT bindings `pumpkin:plugin@0.1.0` (WIT v0.1), WASI `p2`.
 - Crate: `pumpkin-plugin-api 0.2.1`, `waki 0.5.1`, `serde_json 1`.
 - Permission: `http.outbound` (declared as `HTTP_OUTBOUND` in `PluginMetadata`).
-- Plugin name: `offline_skins`; the installed file is `plugins/OfflineSkins.wasm`.
+- Plugin name: `offline_skins`; the installed file is `plugins/PumpSkinsRestorer.wasm`.
 
 ## How it works
 
-1. Pumpkin fires `PlayerLoginEvent` after authentication and **before** the player-info packet is assembled. OfflineSkins registers a handler for it at `EventPriority::Normal`.
+1. Pumpkin fires `PlayerLoginEvent` after authentication and **before** the player-info packet is assembled. PumpSkinsRestorer registers a handler for it at `EventPriority::Normal`.
 2. The handler reads the joining player's name and resolves it with two Mojang requests:
    - `https://api.mojang.com/users/profiles/minecraft/{name}` for the Mojang UUID;
    - `https://sessionserver.mojang.com/session/minecraft/profile/{uuid}?unsigned=false` for the profile properties.
@@ -41,24 +41,24 @@ src/
 ```sh
 rustup toolchain install stable
 rustup target add wasm32-wasip2
-cd plugin-skins-rs
+cd PumpSkinsRestorer
 
 cargo test --lib
 cargo check --target wasm32-wasip2
 cargo build --release --target wasm32-wasip2
 ```
 
-The release artifact is `target/wasm32-wasip2/release/offline_skins.wasm`. The crate builds with `opt-level = "s"`, LTO, one codegen unit, and stripped symbols.
+The release artifact is `target/wasm32-wasip2/release/pump_skins_restorer.wasm`. The crate builds with `opt-level = "s"`, LTO, one codegen unit, and stripped symbols.
 
 `cargo check --target wasm32-wasip2` is part of verification because the Pumpkin API, the generated WIT bindings, and `waki`'s WASI HTTP client only compile for the WASM target. `cargo test --lib` covers the pure parsing layer on the host.
 
 ## Installation
 
 1. Build the plugin (or download the CI artifact).
-2. Copy the `.wasm` into the server's `plugins/` directory and name it `OfflineSkins.wasm`:
+2. Copy the `.wasm` into the server's `plugins/` directory and name it `PumpSkinsRestorer.wasm`:
 
    ```sh
-   cp target/wasm32-wasip2/release/offline_skins.wasm /path/to/server/plugins/OfflineSkins.wasm
+   cp target/wasm32-wasip2/release/pump_skins_restorer.wasm /path/to/server/plugins/PumpSkinsRestorer.wasm
    ```
 
 3. Make sure outbound HTTP is allowed for the plugin. If your `pumpkin.toml` restricts plugin permissions, add:
@@ -69,7 +69,7 @@ The release artifact is `target/wasm32-wasip2/release/offline_skins.wasm`. The c
    allowed_permissions = ["http.outbound"]
    ```
 
-4. Start Pumpkin and join with a name that exists in Mojang's database. The server log shows `OfflineSkins: skin queued for <name>`.
+4. Start Pumpkin and join with a name that exists in Mojang's database. The server log shows `PumpSkinsRestorer: skin queued for <name>`.
 
 The plugin has no configuration file and stores no data.
 
@@ -92,7 +92,7 @@ Offline mode has no proof that a client owns the name it sends, so skins are res
 
 ## CI
 
-`.github/workflows/ci.yml` runs on pushes to `main`, pull requests, and manual dispatch: host unit tests, WASM check, release build, `offline_skins.wasm.sha256` generation, and an `actions/upload-artifact@v4` upload of the `.wasm` and its checksum. `.github/workflows/release.yml` publishes both files to a GitHub Release on `v*` tags.
+`.github/workflows/ci.yml` runs on pushes to `main`, pull requests, and manual dispatch: host unit tests, WASM check, release build, `pump_skins_restorer.wasm.sha256` generation, and an `actions/upload-artifact@v4` upload of the `.wasm` and its checksum. `.github/workflows/release.yml` publishes both files to a GitHub Release on `v*` tags.
 
 ## Credits
 

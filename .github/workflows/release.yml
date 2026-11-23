@@ -35,12 +35,12 @@ jobs:
 
       - name: Generate checksum
         working-directory: target/wasm32-wasip2/release
-        run: sha256sum offline_skins.wasm > offline_skins.wasm.sha256
+        run: sha256sum pump_skins_restorer.wasm > pump_skins_restorer.wasm.sha256
 
       - name: Publish GitHub release
         uses: softprops/action-gh-release@v2
         with:
           generate_release_notes: true
           files: |
-            target/wasm32-wasip2/release/offline_skins.wasm
-            target/wasm32-wasip2/release/offline_skins.wasm.sha256
+            target/wasm32-wasip2/release/pump_skins_restorer.wasm
+            target/wasm32-wasip2/release/pump_skins_restorer.wasm.sha256

@@ -1,5 +1,5 @@
 [package]
-name = "offline_skins"
+name = "pump_skins_restorer"
 version = "0.1.0"
 edition = "2021"
 description = "Applies Mojang skins on Pumpkin servers running with online_mode=false"

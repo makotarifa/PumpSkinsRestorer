@@ -25,17 +25,17 @@ impl EventHandler<PlayerLoginEvent> for LoginHandler {
         let skin = match fetch_skin(&name) {
             Ok(Some(skin)) => skin,
             Ok(None) => {
-                warn!("OfflineSkins: {name} has no Mojang skin; keeping the default");
+                warn!("PumpSkinsRestorer: {name} has no Mojang skin; keeping the default");
                 return event;
             }
             Err(error) => {
-                warn!("OfflineSkins: could not fetch the skin for {name}: {error}");
+                warn!("PumpSkinsRestorer: could not fetch the skin for {name}: {error}");
                 return event;
             }
         };
 
         event.player.set_skin(&skin);
-        info!("OfflineSkins: skin queued for {name}");
+        info!("PumpSkinsRestorer: skin queued for {name}");
         event
     }
 }
