@@ -92,7 +92,7 @@ Offline mode has no proof that a client owns the name it sends, so skins are res
 
 ## CI
 
-`.github/workflows/ci.yml` runs on pushes to `main`, pull requests, and manual dispatch: host unit tests, WASM check, release build, `offline_skins.wasm.sha256` generation, and an `actions/upload-artifact@v4` upload of the `.wasm` and its checksum.
+`.github/workflows/ci.yml` runs on pushes to `main`, pull requests, and manual dispatch: host unit tests, WASM check, release build, `offline_skins.wasm.sha256` generation, and an `actions/upload-artifact@v4` upload of the `.wasm` and its checksum. `.github/workflows/release.yml` publishes both files to a GitHub Release on `v*` tags.
 
 ## Credits
 
